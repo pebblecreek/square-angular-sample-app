@@ -1,0 +1,56 @@
+RBS Mode is actually just a setting
+Create a setting table And Super Admin can select which settings will be shown to users
+Create an End point for user where we can send settings list and it will be shown on their mobile screen
+Create a table for User settings and store all those settings in those tables.
+
+RAtio By Time
+select count(distinct(ul.user_id)) as "count", extract (hour from "at") as "hour" from user_log ul inner join "user" u2 on (u2.id = ul.user_id and u2.company_id = 1) where date("at") = '2021-10-01' and extract (hour from "at") >= 9 and extract (hour from "at") <= 18 group by extract (hour from "at") order by extract (hour from "at") asc
+
+Daily Active Users
+select count(distinct(ul.user_id)) as "count", date("at") from user_log ul inner join "user" u2 on (u2.id = ul.user_id and u2.company_id = 1) where date("at") >= '2021-10-01' and date("at") <= '2021-10-07' group by date("at") order by date("at") asc
+
+Monthly Active users
+select count(distinct(ul.user_id)) as "count", extract (month from "at") as "month" from user_log ul inner join "user" u2 on (u2.id = ul.user_id and u2.company_id = 1) where extract (year from "at") = '2021' group by extract (month from "at") order by extract (month from "at") asc
+
+Retention Ratio
+select count(distinct(ul.user_id)), date(ul."at") from user_log ul inner join ( select distinct on (user_id) "at", user_id from user_log ul where date("at") = '2021-10-01' order by user_id, at asc) as fl on (ul.user_id = fl.user_id) where date(ul."at") >= '2021-10-01' and date(ul."at") <= '2021-10-10' group by date(ul."at") order by date(ul."at")
+
+
+Rankings of contents
+select count(content_id), c.name from content_log cl right join "content" c on (cl.content_id = c.id) where date("at") >= '2021-10-01' and date("at") <= '2021-10-31' and extract (hour from "at") >= 7 and extract (hour from "at") >= 18 group by c.id, c.name
+
+
+<form class="form-horizontal" [formGroup]="filterForm" (ngSubmit)="search()">
+						<div class="row">
+							<div class="col-6">
+								<mat-form-field appearance="legacy">
+									<mat-label>Search</mat-label>
+									<input matInput type="text" formControlName="search">
+								</mat-form-field>
+							</div>
+							<div class="col-2">
+								<div class="form-group ">
+									<lb-auto-complete label="Select Status" placeholder="Select Status" [multiple]="false" appearance="legacy"
+										[fControl]="filterForm.controls.user_status__eq" [options]="selectStatus">
+									</lb-auto-complete>
+								</div>
+							</div>
+							<div class="col-2">
+								<div class="form-group ">
+									<lb-auto-complete label="Select Position" placeholder="Select Position" [multiple]="false" appearance="legacy"
+										[fControl]="filterForm.controls.user_position__eq" [options]="selectPosition">
+									</lb-auto-complete>
+								</div>
+							</div>
+							<div class="col-2">
+								<div class="form-group ">
+									<lb-auto-complete label="Select Department" placeholder="Select Department" [multiple]="false" appearance="legacy"
+										[fControl]="filterForm.controls.user_department__eq" [options]="selectDepartment">
+									</lb-auto-complete>
+								</div>
+							</div>
+							<div class="col-12">
+								<button class="btn btn-primary btn-sm" type="submit">Search</button>
+							</div>
+						</div>
+					</form>

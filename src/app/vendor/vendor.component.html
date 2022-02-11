@@ -1,0 +1,22 @@
+<div class="row py-5 my-5">
+	<div class="col-6 text-end">
+		<img src="/assets/apple.png" width="400px" />
+	</div>
+	<div class="col-6 mt-auto">
+		<h3 class="mb-0">Business Name</h3>
+		<p class="mt-0">My Awesome Business</p>
+		<h3 class="mb-0">Address</h3>
+		<p class="mt-0">Office 311</p>
+		<h3 class="mb-0">Phone</h3>
+		<p class="mt-0">03227894561</p>
+		<h3 class="mb-0">Email</h3>
+		<p class="mt-0">sampleapp@churchservicefinder.com</p>
+		<h3 class="mb-0">Pre-Payment Using square</h3>
+		<a href="{{authorizeUrl}}" [class.btn-success]="buttonText == 'Authorized'" [class.btn-warning]="buttonText == 'Authorize'" [class.btn-secondary]="buttonText == 'Authorize'" class="btn btn-warning w-25 mt-2 fw-bold">{{buttonText}}</a>
+
+		<div><button (click)="getInfo()"  class="btn btn-success w-25 mt-2 fw-bold">Get Info</button></div>
+		<div>
+			<pre>{{info |json}}</pre>
+		</div>
+	</div>
+</div>
