@@ -21,7 +21,7 @@ export class VendorComponent implements OnInit, OnDestroy {
     const sub = this.authService.getState().subscribe(res => {
       if (res.state) {
         this.buttonText = 'Authorize';
-        this.authorizeUrl = "https://connect.squareupsandbox.com/oauth2/authorize?client_id=" + res.client_id + "&scope=CUSTOMERS_WRITE+CUSTOMERS_READ+MERCHANT_PROFILE_READ+PAYMENTS_WRITE+PAYMENTS_READ&session=false&state=" + res.state
+        this.authorizeUrl = environment.base_url + "oauth2/authorize?client_id=" + res.client_id + "&scope=" + environment.permissions + "&session=false&state=" + res.state
       } else {
         this.buttonText = 'Authorized';
       }
@@ -33,7 +33,7 @@ export class VendorComponent implements OnInit, OnDestroy {
       if (this.code) {
         this.buttonText = 'Checking';
         this.authService.getToken({ code: this.code, state: this.state }).subscribe(res => {
-          if(res.success){
+          if (res.success) {
             this.buttonText = 'Authorized';
           } else {
             this.buttonText = 'Authorize';

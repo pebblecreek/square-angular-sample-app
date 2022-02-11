@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:3000/api/'
+  api: 'http://localhost:3000/api/',
+  base_url: 'https://connect.squareupsandbox.com/',
+  permissions: "CUSTOMERS_WRITE+CUSTOMERS_READ+MERCHANT_PROFILE_READ+PAYMENTS_WRITE+PAYMENTS_READ"
 };
 
 /*

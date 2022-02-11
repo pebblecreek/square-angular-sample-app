@@ -2,9 +2,35 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
 
-## Development server
+## Development server Front-End
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm install` to install the project dependencies.
+
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Development server Back-End
+
+Navigate to folder `back-end` in terminal
+
+Run `npm install` to install the project dependencies.
+
+Create the file `config.ts` in the config folder and copy the content from `config-backup.ts` to `config.ts`.
+
+Make sure syncDb in config file is set to true to create the database for sqlite.
+
+Run `npm start`, it will create the database and run the api on `http://localhost:3000`
+
+Set syncDb to false after creating the database, and if you want to clear the database, set it to true and run `npm start`
+
+## Change to Production
+
+Change `base_url` to production in environment for production on Front-End
+
+Change `Application Id` and `Application Secret` in config file on Back-End.
+
+Login to Square, enter the Redirect Url for production and get those keys.
+
+Note: You can not redirect to localhost on production.
 
 ## Code scaffolding
 
