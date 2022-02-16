@@ -1,0 +1,25 @@
+<div class="row mb-5">
+	<div class="w-100">
+		<button routerLink="shopping-cart" class="btn btn-primary btn-sm rounded float-end me-5">Cart</button>
+	</div>
+</div>
+<div class="container ">
+	<div class="d-flex ">
+		<div class="card shadow mt-2 ms-2 w-25" *ngFor="let product of products">
+			<div class="card-body">
+				<div class="d-inline-block">
+					<div class="float-start">
+						<img src="https://images-production-f.squarecdn.com/unsafe/fit-in/120x100/filters:fill(white)/{{product.images[0].image_data.url}}" alt="Product image" class="rounded">
+					</div>
+					<div class="float-start ms-2">
+						<h5>{{product.item_data.name}}</h5>
+						<p>{{product.item_data.variations[0].item_variation_data.price_money.amount/100 | currency}}</p>
+					</div>
+				</div>
+				<div class="w-100 text-center mt-5">
+					<button (click)="goToCart(product)" class="btn btn-danger w-75 btn-md rounded text-center">Buy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

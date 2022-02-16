@@ -1,0 +1,36 @@
+<div class="container d-flex justify-content-center">
+	<div class="card shadow w-100">
+		<div class="card-body">
+			<table class="table table-bordered  border-dark">
+				<thead class="text-center">
+					<tr>
+						<th class="table-dark text-white">ITEM</th>
+						<th class="table-red ">Quantity</th>
+						<th class="table-dark text-white">Price</th>
+						<th class="table-red ">Total</th>
+					</tr>
+				</thead>
+				<tbody class="text-center">
+					<tr *ngFor="let items of cartItems">
+						<td class="text-start table-secondary">
+							<div class="d-inline-block">
+								<div class="float-start">
+									<img src="{{items.image}}" alt="Product image" class="rounded" width="100px" height="100px">
+								</div>
+								<div class="float-start ms-2">
+									<h5>{{items.name}}</h5>
+									<p>{{(items.price/100) | currency}}</p>
+								</div>
+							</div>
+						</td>
+						<td class="table-danger">{{items.quantity}}</td>
+						<td class="table-secondary">{{(items.price/100) | currency}}</td>
+						<td class="table-danger">{{((items.quantity * items.price)/100) | currency }}</td>
+					</tr>
+				</tbody>
+
+			</table>
+			<button class="btn btn-success btn-md float-end m-0">total</button>
+		</div>
+	</div>
+</div>

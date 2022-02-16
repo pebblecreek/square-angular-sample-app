@@ -54,8 +54,7 @@ export class AuthController extends BaseController {
 	}
 	public getInfo = async (req, res): Promise<Response> => {
 		try {
-			console.log(global['token']);
-			const result: AxiosResponse = await axios.get('https://connect.squareupsandbox.com/v2/merchants/me', {
+			const result: AxiosResponse = await axios.get(config.squareUp.base_url +'/v2/merchants/me', {
 				headers: {
 					"Square-Version": "2022-01-20",
 					"Authorization": "Bearer " + global['token'],

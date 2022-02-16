@@ -37,6 +37,12 @@ export default class Utility {
 		}
 		return null;
 	}
+	public static uuidv4 = (): string => {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
 	public static dir = (path): Promise<string> => {
 		const dest = global['appRoot'] + global['config'].uploads.path + path;
 		fs.mkdirSync(dest, { recursive: true });
