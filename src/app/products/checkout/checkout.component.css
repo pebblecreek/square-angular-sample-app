@@ -7,9 +7,8 @@ body {
 }
 
 #payment-form {
-  max-width: 550px;
   min-width: 300px;
-  margin: 150px auto;
+  margin: 50px;
 }
 
 .buyer-inputs {

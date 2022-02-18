@@ -46,8 +46,8 @@ export class ShoppingCartComponent implements OnInit {
     const DialogRef = this.dialog.open(CheckoutComponent, {
       data: { orderId: order_id, amount: this.orderSum()},
       width: '50%',
-      minHeight: '70%',
-      disableClose: true
+      minHeight: '50%',
+      disableClose: false
     });
     const sub = DialogRef.afterClosed().subscribe((res) => {
       sub.unsubscribe();

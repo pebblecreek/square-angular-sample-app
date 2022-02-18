@@ -1,7 +1,8 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { PaymentService } from 'src/_services/payment.service';
 import { ScriptService } from 'src/_services/script.service';
 declare var SqPaymentForm: any;
@@ -11,74 +12,61 @@ declare var SqPaymentForm: any;
   styleUrls: ['./checkout.component.css'],
   providers: [ScriptService]
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
+  @ViewChild('payment-status-container', { static: false }) public paymentDiv: ElementRef;
   appId = 'sandbox-sq0idb-hXLs2Ohxeysy7kTPfUhOmQ';
   locationId = 'LKEGVEGKRYY28';
   card: any;
-  source_id: any = {};
-  paymentForm: any;
-  constructor(private router: Router, private script: ScriptService, public dialogRef: MatDialogRef<CheckoutComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private paymentService: PaymentService) {
-    this.script.load('squarePay').then(res => {
-      this.paymentForm = new SqPaymentForm({
-        applicationId: this.appId,
-        locationId: this.locationId,
-        inputClass: 'sq-input',
-        autoBuild: false,
-        inputStyles: [{
-          fontSize: '16px',
-          lineHeight: '24px',
-          padding: '16px',
-          placeholderColor: '#a0a0a0',
-          backgroundColor: 'transparent',
-        }],
-        cardNumber: {
-          elementId: 'sq-card-number',
-          placeholder: 'Card Number'
-        },
-        cvv: {
-          elementId: 'sq-cvv',
-          placeholder: 'CVV'
-        },
-        expirationDate: {
-          elementId: 'sq-expiration-date',
-          placeholder: 'MM/YY'
-        },
-        postalCode: {
-          elementId: 'sq-postal-code',
-          placeholder: 'Postal'
-        },
-        callbacks: {
-          cardNonceResponseReceived: function (errors: any, nonce: any, cardData: any, billingContact: any, shippingContact: any, shippingOption: any) {
-            if (errors) {
-              // Log errors from payment token generation to the browser developer console.
-              console.error('Encountered errors:');
-              errors.forEach(function (error: any) {
-                console.error('  ' + error.message);
-              });
-              console.log('Encountered errors, check browser developer console for more details');
-              return;
-            }
-            paymentService.createPayment({ order_id: data.orderId, source_id: nonce, amount: data.amount, customer_id: 'R7TFE41VRN74HFH2NPH5ZTJFAC' }).subscribe(res => {
-              console.log(res);
-            });
-          }
-        }
-      });
-      // //TODO: paste code from step 1.1.5
-      this.paymentForm.build();
-    }).catch(error => console.log(error));
+  constructor(private toastr: ToastrService, private router: Router, private script: ScriptService, public dialogRef: MatDialogRef<CheckoutComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private paymentService: PaymentService) {
   }
 
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    this.script.load('squarePaySDK').then(async res => {
+      if (!(window as any).Square) {
+        throw new Error('Square.js failed to load properly');
+      }
+      let payments = (window as any).Square.payments(this.appId, this.locationId);
+      this.initializeCard(payments);
+    }).catch(error => console.log(error));
+  }
+
+  initializeCard(payments: any) {
+    payments.card().then((res: any) => {
+      const card = res;
+      card.attach('#card-container').then((res: any) => {
+        this.card = card;
+      });
+    });
+  }
+
+  tokenize(paymentMethod: any) {
+    paymentMethod.tokenize().then((res: any) => {
+      console.log(res.status);
+      if (res.status === 'OK') {
+        this.paymentService.createPayment({ order_id: this.data.orderId, source_id: res.token, amount: this.data.amount, customer_id: 'R7TFE41VRN74HFH2NPH5ZTJFAC' }).subscribe(res => {
+          console.log(res);
+        });
+      } else {
+        let errorMessage = `Tokenization failed with status: ${res.status}`;
+        if (res.errors) {
+          errorMessage += ` and errors: ${JSON.stringify(
+            res.errors
+          )}`;
+        }
+        throw new Error(errorMessage);
+      }
+    });
+  }
+
   onGetCardNonce(event: any) {
-    // Don't submit the form until SqPaymentForm returns with a payment token
     event.preventDefault();
-    // Request a payment token from the SqPaymentForm object
-    this.paymentForm.requestCardNonce();
+    this.tokenize(this.card);
     this.dialogRef.close();
     localStorage.clear()
+    this.toastr.success('Payment Successfull ', 'Congratulations')
     this.router.navigate(['/products'])
   }
 

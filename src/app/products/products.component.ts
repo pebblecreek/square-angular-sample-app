@@ -29,6 +29,7 @@ export class ProductsComponent implements OnInit {
     item['variationId'] = product.item_data.variations[0].id
     this.cart.push(item);
     localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.toastr.success('Added to Cart Successfully', 'Success')
   }
 
 }

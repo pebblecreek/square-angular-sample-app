@@ -1,7 +1,4 @@
-<div id="form-container">
-	<div id="sq-card-number"></div>
-	<div class="third" id="sq-expiration-date"></div>
-	<div class="third" id="sq-cvv"></div>
-	<div class="third" id="sq-postal-code"></div>
+<form id="payment-form">
+	<div id="card-container"></div>
 	<button id="sq-creditcard" class="button-credit-card" (click)="onGetCardNonce($event)">Pay {{data.amount/100 | currency}}</button>
-</div>
+</form>
