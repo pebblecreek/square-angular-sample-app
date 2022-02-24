@@ -48,6 +48,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       if (res.status === 'OK') {
         this.paymentService.createPayment({ order_id: this.data.orderId, source_id: res.token, amount: this.data.amount, customer_id: 'R7TFE41VRN74HFH2NPH5ZTJFAC' }).subscribe(res => {
           console.log(res);
+          this.dialogRef.close();
+          localStorage.clear()
+          this.toastr.success('Payment Successfull ', 'Congratulations')
+          this.router.navigate(['/products'])
         });
       } else {
         let errorMessage = `Tokenization failed with status: ${res.status}`;
@@ -64,10 +68,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   onGetCardNonce(event: any) {
     event.preventDefault();
     this.tokenize(this.card);
-    this.dialogRef.close();
-    localStorage.clear()
-    this.toastr.success('Payment Successfull ', 'Congratulations')
-    this.router.navigate(['/products'])
+    
   }
 
 

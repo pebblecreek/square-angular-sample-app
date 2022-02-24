@@ -46,7 +46,9 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run `npx cypress open` to luanch the testing window
+Click one of the available test, it will start end-to-end testing for that scenerio.
+Please make sure that front-end and backend is already running.
 
 ## Further help
 

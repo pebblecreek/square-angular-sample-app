@@ -5,7 +5,7 @@
 </div>
 <div class="container ">
 	<div class="d-flex ">
-		<div class="card shadow mt-2 ms-2 w-25" *ngFor="let product of products">
+		<div class="card shadow mt-2 ms-2 w-25" *ngFor="let product of products; let i=index">
 			<div class="card-body">
 				<div class="d-inline-block">
 					<div class="float-start">
@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<div class="w-100 text-center mt-5">
-					<button (click)="goToCart(product)" class="btn btn-danger w-75 btn-md rounded text-center">Buy</button>
+					<button (click)="goToCart(product)" class="btn btn-danger w-75 btn-md rounded text-center" ngClass="product-button-{{i}}">Buy</button>
 				</div>
 			</div>
 		</div>
